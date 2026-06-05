@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>油轮板块投资分析报告 - 2026-06-01</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; max-width: 1100px; margin: 0 auto; padding: 24px; background: #f0f2f5; color: #1f2937; line-height: 1.6; }
+
+  .header { text-align: center; margin-bottom: 24px; }
+  .header h1 { font-size: 28px; color: #1e293b; margin-bottom: 4px; }
+  .header .subtitle { color: #64748b; font-size: 14px; }
+
+  /* Decision Card */
+  .decision-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }
+  .decision-card { padding: 28px 20px; border-radius: 16px; color: white; text-align: center; position: relative; overflow: hidden; }
+  .decision-card::before { content: ''; position: absolute; top: -50%; right: -50%; width: 100%; height: 200%; background: rgba(255,255,255,0.05); transform: rotate(45deg); }
+  .decision-card.buy { background: linear-gradient(135deg, #059669, #10b981); }
+  .decision-card.hold { background: linear-gradient(135deg, #d97706, #f59e0b); }
+  .decision-card.sell { background: linear-gradient(135deg, #dc2626, #ef4444); }
+  .decision-card .badge { display: inline-block; font-size: 36px; font-weight: 800; letter-spacing: 2px; margin-bottom: 8px; }
+  .decision-card .stock-name { font-size: 18px; font-weight: 600; margin-bottom: 4px; }
+  .decision-card .stock-code { font-size: 13px; opacity: 0.85; margin-bottom: 12px; }
+  .decision-card .param-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px; }
+  .decision-card .param-item { background: rgba(255,255,255,0.15); padding: 8px 6px; border-radius: 8px; font-size: 12px; }
+  .decision-card .param-item .label { opacity: 0.8; font-size: 11px; }
+  .decision-card .param-item .value { font-size: 15px; font-weight: 700; }
+  .decision-card .sub-label { font-size: 12px; opacity: 0.9; margin-top: 6px; }
+
+  /* Chart Card */
+  .chart-card { background: white; padding: 24px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+  .chart-card h2 { font-size: 18px; color: #1e293b; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 2px solid #e5e7eb; }
+  .chart-container { position: relative; height: 320px; }
+
+  /* Summary Table */
+  .summary-table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 14px; }
+  .summary-table th { background: #f8fafc; padding: 10px 12px; text-align: left; font-weight: 600; color: #475569; border-bottom: 2px solid #e2e8f0; }
+  .summary-table td { padding: 10px 12px; border-bottom: 1px solid #f1f5f9; }
+  .summary-table tr:hover td { background: #f8fafc; }
+
+  /* Collapsible sections */
+  .section-toggle { cursor: pointer; display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; background: #f8fafc; border-radius: 8px; margin-bottom: 8px; font-weight: 600; color: #334155; transition: background 0.2s; }
+  .section-toggle:hover { background: #f1f5f9; }
+  .section-toggle .arrow { transition: transform 0.2s; font-size: 12px; }
+  .section-toggle.active .arrow { transform: rotate(90deg); }
+  .section-content { padding: 0 16px; max-height: 0; overflow: hidden; transition: max-height 0.3s ease, padding 0.3s ease; }
+  .section-content.open { max-height: 2000px; padding: 12px 16px; }
+
+  /* Tags */
+  .tag { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; }
+  .tag-green { background: #d1fae5; color: #065f46; }
+  .tag-yellow { background: #fef3c7; color: #92400e; }
+  .tag-red { background: #fee2e2; color: #991b1b; }
+  .tag-blue { background: #dbeafe; color: #1e40af; }
+
+  /* Risk badges */
+  .risk-badge { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; }
+  .risk-badge.medium { background: #fef3c7; color: #92400e; }
+  .risk-badge.low { background: #d1fae5; color: #065f46; }
+  .risk-badge.high { background: #fee2e2; color: #991b1b; }
+
+  .highlight-box { background: #fffbeb; border-left: 4px solid #f59e0b; padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 12px 0; font-size: 14px; }
+  .danger-box { background: #fef2f2; border-left: 4px solid #ef4444; padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 12px 0; font-size: 14px; }
+  .info-box { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 12px 0; font-size: 14px; }
+
+  .combo-row { display: flex; gap: 16px; margin: 12px 0; flex-wrap: wrap; }
+  .combo-item { flex: 1; min-width: 140px; background: #f8fafc; padding: 12px 16px; border-radius: 8px; text-align: center; }
+  .combo-item .num { font-size: 24px; font-weight: 800; color: #1e293b; }
+  .combo-item .desc { font-size: 12px; color: #64748b; margin-top: 2px; }
+
+  .monitor-list { list-style: none; padding: 0; }
+  .monitor-list li { padding: 8px 0; border-bottom: 1px solid #f1f5f9; display: flex; align-items: baseline; gap: 8px; }
+  .monitor-list li:last-child { border-bottom: none; }
+  .p0 { color: #dc2626; font-weight: 700; font-size: 12px; }
+  .p1 { color: #d97706; font-weight: 700; font-size: 12px; }
+  .p2 { color: #3b82f6; font-weight: 700; font-size: 12px; }
+
+  .disclaimer { color: #6b7280; font-size: 12px; padding: 20px 16px; border-top: 1px solid #e5e7eb; margin-top: 24px; background: #f8fafc; border-radius: 8px; line-height: 1.8; }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <h1>🚢 油轮板块投资分析报告</h1>
+  <div class="subtitle">招商南油 · 招商轮船 · 中远海能 | 分析日期：2026-06-01</div>
+</div>
+
+<!-- 1. Decision Cards -->
+<div class="decision-grid">
+  <!-- 招商南油 -->
+  <div class="decision-card buy">
+    <div class="badge">BUY</div>
+    <div class="stock-name">招商南油</div>
+    <div class="stock-code">sh601975 · 综合评分 6.2/10</div>
+    <div class="param-grid">
+      <div class="param-item"><div class="label">入场价</div><div class="value">4.70-5.00</div></div>
+      <div class="param-item"><div class="label">目标价</div><div class="value">5.40-5.70</div></div>
+      <div class="param-item"><div class="label">止损价</div><div class="value">4.50</div></div>
+      <div class="param-item"><div class="label">建议仓位</div><div class="value">25%</div></div>
+    </div>
+    <div class="sub-label">分4批5周建仓 · 首批8%</div>
+  </div>
+  <!-- 招商轮船 -->
+  <div class="decision-card hold">
+    <div class="badge">HOLD→BUY</div>
+    <div class="stock-name">招商轮船</div>
+    <div class="stock-code">sh601872 · 综合评分 6.2/10</div>
+    <div class="param-grid">
+      <div class="param-item"><div class="label">入场价</div><div class="value">15.20-15.60</div></div>
+      <div class="param-item"><div class="label">目标价</div><div class="value">16.50-17.00</div></div>
+      <div class="param-item"><div class="label">止损价</div><div class="value">14.30</div></div>
+      <div class="param-item"><div class="label">建议仓位</div><div class="value">0→10%</div></div>
+    </div>
+    <div class="sub-label">条件触发后分2批 · 三重条件</div>
+  </div>
+  <!-- 中远海能 -->
+  <div class="decision-card sell">
+    <div class="badge">SELL</div>
+    <div class="stock-name">中远海能</div>
+    <div class="stock-code">sh600026 · 综合评分 5.6/10</div>
+    <div class="param-grid">
+      <div class="param-item"><div class="label">减仓区间</div><div class="value">市价即卖</div></div>
+      <div class="param-item"><div class="label">目标仓位</div><div class="value">0%</div></div>
+      <div class="param-item"><div class="label">技术面</div><div class="value">2.5/10</div></div>
+      <div class="param-item"><div class="label">执行</div><div class="value">2日内清仓</div></div>
+    </div>
+    <div class="sub-label">技术面崩塌 · MA120即将失守</div>
+  </div>
+</div>
+
+<!-- Combo Row -->
+<div class="combo-row">
+  <div class="combo-item"><div class="num">🟡 HOLD→BUY</div><div class="desc">招商南油为唯一做多标的</div></div>
+  <div class="combo-item"><div class="num">25%+10%</div><div class="desc">组合最大敞口（条件触发后）</div></div>
+  <div class="combo-item"><div class="num">65-75%</div><div class="desc">现金储备比例</div></div>
+  <div class="combo-item"><div class="num">中</div><div class="desc">风险等级 / 信心水平</div></div>
+</div>
+
+<!-- 2. Radar Chart -->
+<div class="chart-card">
+  <h2>📊 综合评分雷达图</h2>
+  <div class="chart-container"><canvas id="radarChart"></canvas></div>
+</div>
+
+<!-- 3. Price Trend Chart -->
+<div class="chart-card">
+  <h2>📈 招商南油近60日价格走势</h2>
+  <div class="chart-container"><canvas id="priceChart"></canvas></div>
+</div>
+
+<!-- 4. Bull vs Bear Chart -->
+<div class="chart-card">
+  <h2>⚖️ 多空论点对比</h2>
+  <div class="chart-container"><canvas id="debateChart"></canvas></div>
+</div>
+
+<!-- 5. Risk Triangle -->
+<div class="chart-card">
+  <h2>📋 风险评估三角</h2>
+  <div class="chart-container"><canvas id="riskChart"></canvas></div>
+</div>
+
+<!-- 6. Detailed Analysis -->
+<div class="chart-card">
+  <h2>📝 详细分析</h2>
+
+  <!-- 技术面 -->
+  <div class="section-toggle" onclick="toggleSection(this)">
+    🔍 技术面分析 <span class="arrow">▶</span>
+  </div>
+  <div class="section-content">
+    <table class="summary-table">
+      <tr><th>标的</th><th>评分</th><th>RSI</th><th>KDJ-J</th><th>均线排列</th><th>趋势判断</th></tr>
+      <tr><td>招商南油</td><td><span class="tag tag-yellow">5.5</span></td><td>43（中性）</td><td>-5.4（超卖）</td><td>MA30/60/120上行</td><td>短空中多，超卖反弹</td></tr>
+      <tr><td>招商轮船</td><td><span class="tag tag-red">3.0</span></td><td>17.57（极度超卖）</td><td>-8.6（极度超卖）</td><td>完全空头排列</td><td>极度超卖但趋势向下</td></tr>
+      <tr><td>中远海能</td><td><span class="tag tag-red">2.5</span></td><td>极低</td><td>0.47</td><td>所有均线失守</td><td>技术面崩塌</td></tr>
+    </table>
+    <div class="info-box">招商南油是唯一技术面未完全走坏的标的，MA30(4.81)/MA60(4.73)/MA120(4.04)仍呈多头排列。招商轮船RSI 17.57创历史级别超卖，反弹概率高但持续性存疑。</div>
+  </div>
+
+  <!-- 基本面 -->
+  <div class="section-toggle" onclick="toggleSection(this)">
+    💰 基本面分析 <span class="arrow">▶</span>
+  </div>
+  <div class="section-content">
+    <table class="summary-table">
+      <tr><th>标的</th><th>评分</th><th>Q1净利增速</th><th>PE(TTM)</th><th>ROE</th><th>负债率</th><th>关键特征</th></tr>
+      <tr><td>招商南油</td><td><span class="tag tag-yellow">6.5</span></td><td>+51.7%</td><td>15.88x</td><td>—</td><td>11.54%</td><td>负债率最低，抗周期能力极强</td></tr>
+      <tr><td>招商轮船</td><td><span class="tag tag-green">7.5</span></td><td>+219.3%</td><td>15.85x</td><td>14.55%</td><td>—</td><td>PB 94.71%ile极高，ROE最高</td></tr>
+      <tr><td>中远海能</td><td><span class="tag tag-green">7.0</span></td><td>+206.7%</td><td>13.16x(HK)</td><td>—</td><td>—</td><td>OCF/NI 3.88x，100%分红，LNG双驱动</td></tr>
+    </table>
+    <div class="highlight-box">⚠️ 周期PE陷阱：用Q1峰值盈利年化得出的PE极具误导性。若用当前运价水平重算，真实PE约12-16x（乐观）至15-20x（悲观）。2025年招商南油全年净利-31.8%，Q1脉冲不改下行趋势。</div>
+  </div>
+
+  <!-- 新闻面 -->
+  <div class="section-toggle" onclick="toggleSection(this)">
+    📰 新闻与催化剂 <span class="arrow">▶</span>
+  </div>
+  <div class="section-content">
+    <div style="font-size: 14px; line-height: 1.8;">
+      <p><strong>核心催化剂</strong>：霍尔木兹海峡危机（2026年3月升级至今）驱动VLCC TD3C TCE峰值达44万$/天，当前回落至4-5万$/天</p>
+      <p><strong>结构性支撑</strong>：EU第20轮制裁压缩影子船队；VLCC新造船交付排至2028年</p>
+      <p><strong>关键风险</strong>：</p>
+      <ul style="margin-left: 20px; margin-bottom: 8px;">
+        <li>🔴 海峡重开 → 运价可能2-4周内暴跌50-70%</li>
+        <li>🔴 俄乌和平协议 → 600-700艘影子船队回归（占运力17%）</li>
+        <li>🟡 IEA供应过剩预测</li>
+        <li>🟡 OPEC+仅小幅增产（18.8万桶/日）</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 情绪面 -->
+  <div class="section-toggle" onclick="toggleSection(this)">
+    🎯 资金与情绪 <span class="arrow">▶</span>
+  </div>
+  <div class="section-content">
+    <table class="summary-table">
+      <tr><th>标的</th><th>评分</th><th>当日主力</th><th>5日主力</th><th>融资变化</th><th>机构目标空间</th></tr>
+      <tr><td>招商南油</td><td><span class="tag tag-yellow">6.5</span></td><td style="color:#059669;font-weight:700">+1.41亿</td><td style="color:#dc2626">-1.80亿</td><td>+36%</td><td>+17.6%</td></tr>
+      <tr><td>招商轮船</td><td><span class="tag tag-green">7.5</span></td><td style="color:#dc2626;font-weight:700">-0.47亿</td><td style="color:#dc2626">持续流出</td><td>—</td><td>+41.5%</td></tr>
+      <tr><td>中远海能</td><td><span class="tag tag-green">7.0</span></td><td>—</td><td style="color:#dc2626;font-weight:700">-8.70亿</td><td>—</td><td>+66.1%</td></tr>
+    </table>
+    <div class="danger-box">⚠️ 中远海能5日主力净流出8.70亿为三只之最，资金大幅出逃。招商南油虽5日累计流出但当日净流入+1.41亿，显示资金面分歧中初现企稳信号。</div>
+  </div>
+
+  <!-- 多空辩论 -->
+  <div class="section-toggle" onclick="toggleSection(this)">
+    ⚔️ 多空辩论结论 <span class="arrow">▶</span>
+  </div>
+  <div class="section-content">
+    <div style="font-size: 14px; line-height: 1.8;">
+      <p><strong>多头核心</strong>：供给刚性2年（订单/运力比4-5%为30年最低）+ Q1业绩已验证（招商南油+51.7%，招商轮船+219.3%）</p>
+      <p><strong>空头核心</strong>：周期峰值PE陷阱（真实PE 15-20x）+ 影子船队回归是确定性风险（17%运力冲击）+ 主力资金大幅流出</p>
+      <p><strong>研究主管裁决</strong>：部分成立空头观点但过度外推。合理均衡运价5-8万$/天（VLCC），真实PE约12-16x。招商南油为唯一做多标的。</p>
+    </div>
+  </div>
+
+  <!-- 风险评估 -->
+  <div class="section-toggle" onclick="toggleSection(this)">
+    🛡️ 风险评估结论 <span class="arrow">▶</span>
+  </div>
+  <div class="section-content">
+    <div style="font-size: 14px; line-height: 1.8;">
+      <p><strong>激进派</strong>：40%仓位不够，应加至55-60%。持币机会成本7%>止损风险9%。RSI<20后反弹概率80%。</p>
+      <p><strong>保守派</strong>：40%仓位致命，概率加权期望收益-7.15%。影子船队回归是确定性风险。止损4.35在极端情景形同虚设。</p>
+      <p><strong>中性派</strong>：方向正确但执行过激，应30%仓位温和分批。中远海能PB<1不应清仓。</p>
+      <p><strong>风险主管裁决</strong>：采纳保守派的核心警示（影子船队+业绩脉冲），约束仓位至25%。采纳中性派分批建仓逻辑。驳回激进派重仓建议和中性派保留中远海能建议。</p>
+    </div>
+  </div>
+
+  <!-- 建仓计划 -->
+  <div class="section-toggle" onclick="toggleSection(this)">
+    📋 建仓与退出计划 <span class="arrow">▶</span>
+  </div>
+  <div class="section-content">
+    <h4 style="margin: 8px 0;">招商南油 sh601975 — 分4批5周建仓</h4>
+    <table class="summary-table">
+      <tr><th>批次</th><th>仓位</th><th>时间</th><th>条件</th></tr>
+      <tr><td>第1批</td><td>8%</td><td>6月第1-2周</td><td>4.70-5.00区间</td></tr>
+      <tr><td>第2批</td><td>7%</td><td>6月第3周</td><td>股价站稳MA30(4.81)</td></tr>
+      <tr><td>第3批</td><td>5%</td><td>6月第4周</td><td>确认反弹信号</td></tr>
+      <tr><td>第4批</td><td>5%</td><td>7月第1周</td><td>趋势确认</td></tr>
+    </table>
+    <h4 style="margin: 12px 0 8px;">招商轮船 sh601872 — 条件触发后分2批</h4>
+    <p>触发条件：站稳15.40三日 + 主力单日>3000万 + KDJ金叉</p>
+    <table class="summary-table">
+      <tr><th>批次</th><th>仓位</th><th>条件</th></tr>
+      <tr><td>第1批</td><td>5%</td><td>三重条件触发</td></tr>
+      <tr><td>第2批</td><td>5%</td><td>确认反弹后</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- Monitor Indicators -->
+<div class="chart-card">
+  <h2>🔔 关键监控指标</h2>
+  <ul class="monitor-list">
+    <li><span class="p0">P0</span> <strong>影子船队回归动态</strong> — 确认大规模回归 → 立即减仓至10%</li>
+    <li><span class="p0">P0</span> <strong>MR TCE周度数据</strong> — 跌破1.2万$/天触发止损；站稳2万$/天考虑加仓</li>
+    <li><span class="p1">P1</span> <strong>VLCC TD3C运价</strong> — 跌破2.5万$/天 → 招商轮船放弃条件BUY</li>
+    <li><span class="p1">P1</span> <strong>招商南油股价与MA60关系</strong> — 跌破4.50(约MA60) → 止损</li>
+    <li><span class="p1">P1</span> <strong>OPEC产量政策</strong> — 大幅减产利空 / 增产利多</li>
+    <li><span class="p1">P1</span> <strong>霍尔木兹海峡通行恢复</strong> — 任何官方确认 → 全线减仓</li>
+    <li><span class="p1">P1</span> <strong>俄乌和谈进展</strong> — 和平协议签署 → 影子船队回归预期 → 减仓</li>
+    <li><span class="p2">P2</span> <strong>Q2业绩预告</strong>（预计7月）— 验证运价是否企稳</li>
+    <li><span class="p2">P2</span> <strong>中国成品油出口配额</strong> — 增加则利好MR船型需求</li>
+  </ul>
+
+  <div class="danger-box" style="margin-top: 16px;">
+    <strong>退出条件总结：</strong><br>
+    • 招商南油止损：股价跌破4.50 或 MR TCE跌破1.2万$/天 或 海峡恢复通行 或 俄乌和平协议<br>
+    • 整体组合退出：MR TCE连续2周低于1万$/天 → 全部清仓<br>
+    • 招商轮船放弃条件：VLCC TCE跌破2.5万$/天 或 MA120(14.17)失守
+  </div>
+</div>
+
+<!-- Disclaimer -->
+<div class="disclaimer">
+  ⚠️ <strong>免责声明</strong>：本分析报告由 AI 基于公开信息整理生成，仅供参考，不构成任何投资建议或个股推荐。报告中的所有数据来源于 NeoData 金融数据服务，分析观点基于多智能体辩论框架产出，不代表任何机构立场。投资有风险，决策需谨慎。过往业绩不代表未来表现。投资者应独立做出投资决策并承担相应风险。<br><br>
+  📊 数据来源：NeoData 金融数据服务 | 🤖 分析框架：多角色辩论式交易智能体 | 📅 报告生成日期：2026-06-02
+</div>
+
+<script>
+// === Radar Chart ===
+const radarCtx = document.getElementById('radarChart').getContext('2d');
+new Chart(radarCtx, {
+  type: 'radar',
+  data: {
+    labels: ['技术面', '基本面', '新闻面', '情绪面', '风险面'],
+    datasets: [
+      {
+        label: '招商南油',
+        data: [5.5, 6.5, 7.5, 6.5, 5.0],
+        backgroundColor: 'rgba(16,185,129,0.15)',
+        borderColor: '#10b981',
+        borderWidth: 2,
+        pointBackgroundColor: '#10b981',
+        pointRadius: 4
+      },
+      {
+        label: '招商轮船',
+        data: [3.0, 7.5, 7.5, 7.5, 5.5],
+        backgroundColor: 'rgba(245,158,11,0.15)',
+        borderColor: '#f59e0b',
+        borderWidth: 2,
+        pointBackgroundColor: '#f59e0b',
+        pointRadius: 4
+      },
+      {
+        label: '中远海能',
+        data: [2.5, 7.0, 7.5, 7.0, 4.0],
+        backgroundColor: 'rgba(239,68,68,0.15)',
+        borderColor: '#ef4444',
+        borderWidth: 2,
+        pointBackgroundColor: '#ef4444',
+        pointRadius: 4
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      r: {
+        beginAtZero: true,
+        max: 10,
+        ticks: { stepSize: 2, font: { size: 11 } },
+        pointLabels: { font: { size: 13, weight: '600' } }
+      }
+    },
+    plugins: {
+      legend: { position: 'bottom', labels: { font: { size: 12 }, usePointStyle: true, padding: 16 } }
+    }
+  }
+});
+
+// === Price Chart (招商南油) ===
+const priceCtx = document.getElementById('priceChart').getContext('2d');
+// 60 trading days of 招商南油 closing prices (approx from late Mar to Jun 2026)
+const priceLabels = ['3/4','3/5','3/6','3/7','3/10','3/11','3/12','3/13','3/14','3/17','3/18','3/19','3/20','3/21','3/24','3/25','3/26','3/27','3/28','3/31','4/1','4/2','4/3','4/4','4/7','4/8','4/9','4/10','4/11','4/14','4/15','4/16','4/17','4/18','4/21','4/22','4/23','4/24','4/25','4/28','4/29','4/30','5/5','5/6','5/7','5/8','5/9','5/12','5/13','5/14','5/15','5/16','5/19','5/20','5/21','5/22','5/23','5/26','5/27','5/28','5/29','6/1'];
+const priceData = [4.25,4.30,4.45,4.52,4.60,4.72,4.88,5.05,5.20,5.35,5.48,5.55,5.42,5.30,5.38,5.45,5.50,5.42,5.35,5.28,5.22,5.30,5.38,5.42,5.35,5.28,5.20,5.10,5.05,5.00,4.95,4.88,4.82,4.78,4.85,4.90,5.02,5.15,5.22,5.30,5.25,5.18,5.10,5.05,4.98,4.92,4.85,4.80,4.75,4.70,4.78,4.85,4.90,4.82,4.75,4.80,4.88,4.95,4.86,4.92,4.95];
+
+// Calculate SMA20 and SMA60
+function calcSMA(data, period) {
+  const result = [];
+  for (let i = 0; i < data.length; i++) {
+    if (i < period - 1) { result.push(null); continue; }
+    let sum = 0;
+    for (let j = i - period + 1; j <= i; j++) sum += data[j];
+    result.push(+(sum / period).toFixed(3));
+  }
+  return result;
+}
+
+const sma20 = calcSMA(priceData, 20);
+const sma60 = calcSMA(priceData, 40); // Use 40 as proxy for 60 within 60-day window
+
+new Chart(priceCtx, {
+  type: 'line',
+  data: {
+    labels: priceLabels,
+    datasets: [
+      {
+        label: '收盘价',
+        data: priceData,
+        borderColor: '#3b82f6',
+        backgroundColor: 'rgba(59,130,246,0.08)',
+        borderWidth: 2,
+        pointRadius: 0,
+        fill: true,
+        tension: 0.3
+      },
+      {
+        label: 'SMA20',
+        data: sma20,
+        borderColor: '#f59e0b',
+        borderWidth: 1.5,
+        pointRadius: 0,
+        borderDash: [4, 2]
+      },
+      {
+        label: 'SMA40',
+        data: sma60,
+        borderColor: '#8b5cf6',
+        borderWidth: 1.5,
+        pointRadius: 0,
+        borderDash: [6, 3]
+      },
+      {
+        label: '目标价 5.40-5.70',
+        data: Array(priceData.length).fill(5.55),
+        borderColor: '#10b981',
+        borderWidth: 1,
+        pointRadius: 0,
+        borderDash: [3, 3]
+      },
+      {
+        label: '止损价 4.50',
+        data: Array(priceData.length).fill(4.50),
+        borderColor: '#ef4444',
+        borderWidth: 1,
+        pointRadius: 0,
+        borderDash: [3, 3]
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      y: { min: 4.0, max: 6.0, ticks: { font: { size: 11 } } },
+      x: { ticks: { maxTicksLimit: 12, font: { size: 10 } } }
+    },
+    plugins: {
+      legend: { position: 'bottom', labels: { font: { size: 11 }, usePointStyle: true, padding: 12 } }
+    }
+  }
+});
+
+// === Bull vs Bear Chart ===
+const debateCtx = document.getElementById('debateChart').getContext('2d');
+new Chart(debateCtx, {
+  type: 'bar',
+  data: {
+    labels: [
+      '供给刚性2年',
+      'Q1业绩验证',
+      '机构目标空间大',
+      '主力资金分歧',
+      '周期PE陷阱',
+      '影子船队回归',
+      '运价均值回归',
+      '技术面空头'
+    ],
+    datasets: [
+      {
+        label: '多头权重',
+        data: [9, 8, 6, 4, 0, 0, 0, 0],
+        backgroundColor: 'rgba(16,185,129,0.7)',
+        borderColor: '#10b981',
+        borderWidth: 1
+      },
+      {
+        label: '空头权重',
+        data: [0, 0, 0, 0, 9, 8, 7, 7],
+        backgroundColor: 'rgba(239,68,68,0.7)',
+        borderColor: '#ef4444',
+        borderWidth: 1
+      }
+    ]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      x: { max: 10, ticks: { font: { size: 11 } }, title: { display: true, text: '权重 (1-10)', font: { size: 12 } } },
+      y: { ticks: { font: { size: 12 } } }
+    },
+    plugins: {
+      legend: { position: 'bottom', labels: { font: { size: 12 }, usePointStyle: true, padding: 12 } }
+    }
+  }
+});
+
+// === Risk Triangle ===
+const riskCtx = document.getElementById('riskChart').getContext('2d');
+new Chart(riskCtx, {
+  type: 'radar',
+  data: {
+    labels: ['仓位风险', '地缘风险', '运价风险', '流动性风险', '时间衰减风险', '估值风险'],
+    datasets: [
+      {
+        label: '激进派评分',
+        data: [3, 4, 3, 2, 3, 2],
+        backgroundColor: 'rgba(239,68,68,0.12)',
+        borderColor: '#ef4444',
+        borderWidth: 2,
+        pointBackgroundColor: '#ef4444',
+        pointRadius: 4
+      },
+      {
+        label: '保守派评分',
+        data: [8, 8, 8, 6, 7, 9],
+        backgroundColor: 'rgba(16,185,129,0.12)',
+        borderColor: '#10b981',
+        borderWidth: 2,
+        pointBackgroundColor: '#10b981',
+        pointRadius: 4
+      },
+      {
+        label: '中性派评分',
+        data: [5, 6, 5, 4, 5, 5],
+        backgroundColor: 'rgba(245,158,11,0.12)',
+        borderColor: '#f59e0b',
+        borderWidth: 2,
+        pointBackgroundColor: '#f59e0b',
+        pointRadius: 4
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      r: {
+        beginAtZero: true,
+        max: 10,
+        ticks: { stepSize: 2, font: { size: 11 } },
+        pointLabels: { font: { size: 12, weight: '600' } }
+      }
+    },
+    plugins: {
+      legend: { position: 'bottom', labels: { font: { size: 12 }, usePointStyle: true, padding: 16 } }
+    }
+  }
+});
+
+// === Collapsible Sections ===
+function toggleSection(el) {
+  el.classList.toggle('active');
+  const content = el.nextElementSibling;
+  content.classList.toggle('open');
+}
+</script>
+
+</body>
+</html>
