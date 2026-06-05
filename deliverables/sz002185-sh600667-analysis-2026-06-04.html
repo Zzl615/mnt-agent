@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>华天科技 & 太极实业 投资分析报告 - 2026-06-04</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  * { box-sizing: border-box; }
+  body { font-family: -apple-system, "PingFang SC", "Helvetica Neue", sans-serif; max-width: 1080px; margin: 0 auto; padding: 24px; background: #f0f2f5; color: #1f2937; line-height: 1.6; }
+  h1, h2, h3 { margin-top: 0; }
+  
+  .report-header { text-align: center; padding: 20px 0 10px; border-bottom: 2px solid #e5e7eb; margin-bottom: 24px; }
+  .report-header h1 { font-size: 28px; color: #111827; }
+  .report-header .meta { color: #6b7280; font-size: 14px; margin-top: 8px; }
+  .report-header .meta span { margin: 0 12px; }
+
+  .stock-section { margin-bottom: 40px; }
+  .stock-section h2 { font-size: 22px; border-left: 4px solid; padding-left: 12px; margin-bottom: 16px; }
+  .stock-section.huatian h2 { border-color: #ef4444; }
+  .stock-section.taiji h2 { border-color: #f59e0b; }
+
+  /* Decision Card */
+  .decision-card { padding: 32px; border-radius: 16px; margin-bottom: 24px; color: white; position: relative; overflow: hidden; }
+  .decision-card.sell { background: linear-gradient(135deg, #dc2626, #991b1b); }
+  .decision-card.hold { background: linear-gradient(135deg, #d97706, #92400e); }
+  .decision-card.buy { background: linear-gradient(135deg, #059669, #065f46); }
+  .decision-card .verdict { font-size: 52px; font-weight: 800; letter-spacing: 2px; }
+  .decision-card .sub { font-size: 16px; opacity: 0.9; margin-top: 4px; }
+  .decision-card .badges { display: flex; gap: 10px; margin-top: 16px; }
+  .decision-card .badge { background: rgba(255,255,255,0.2); padding: 6px 14px; border-radius: 20px; font-size: 14px; }
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 20px; }
+  .grid-item { background: rgba(255,255,255,0.15); padding: 14px; border-radius: 10px; text-align: center; }
+  .grid-item .label { font-size: 12px; opacity: 0.8; }
+  .grid-item .value { font-size: 22px; font-weight: 700; margin-top: 4px; }
+
+  /* Chart Card */
+  .chart-card { background: white; padding: 24px; border-radius: 12px; margin-bottom: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+  .chart-card h3 { margin: 0 0 16px; font-size: 17px; color: #374151; border-bottom: 1px solid #f3f4f6; padding-bottom: 10px; }
+
+  /* Text Sections */
+  .text-section { background: white; padding: 24px; border-radius: 12px; margin-bottom: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+  .text-section h3 { margin: 0 0 12px; font-size: 17px; color: #374151; }
+  .text-section p { margin: 8px 0; font-size: 14px; color: #4b5563; }
+  .text-section ul { padding-left: 20px; }
+  .text-section li { font-size: 14px; color: #4b5563; margin: 6px 0; }
+  
+  .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .detail-block h4 { font-size: 15px; color: #1f2937; margin: 0 0 8px; }
+  .detail-block p, .detail-block li { font-size: 13px; color: #6b7280; }
+
+  .highlight { background: #fef3c7; border-left: 3px solid #f59e0b; padding: 12px 16px; border-radius: 6px; margin: 12px 0; font-size: 14px; }
+  .highlight.red { background: #fee2e2; border-color: #ef4444; }
+  .highlight.green { background: #d1fae5; border-color: #10b981; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 14px; margin: 12px 0; }
+  th { background: #f9fafb; text-align: left; padding: 10px 12px; border-bottom: 2px solid #e5e7eb; color: #374151; font-weight: 600; }
+  td { padding: 10px 12px; border-bottom: 1px solid #f3f4f6; color: #4b5563; }
+  tr:hover td { background: #f9fafb; }
+
+  .disclaimer { color: #6b7280; font-size: 12px; padding: 20px; border-top: 1px solid #e5e7eb; margin-top: 32px; text-align: center; line-height: 1.8; }
+  
+  .score-table td:first-child { font-weight: 600; }
+  .score-val { font-weight: 700; }
+  .score-val.high { color: #059669; }
+  .score-val.mid { color: #d97706; }
+  .score-val.low { color: #dc2626; }
+
+  .collapsible { cursor: pointer; padding: 12px 16px; background: #f9fafb; border-radius: 8px; margin-bottom: 8px; font-weight: 600; font-size: 15px; display: flex; justify-content: space-between; align-items: center; }
+  .collapsible:hover { background: #f3f4f6; }
+  .collapsible::after { content: "▼"; font-size: 12px; transition: transform 0.2s; }
+  .collapsible.active::after { transform: rotate(180deg); }
+  .collapsible-content { display: none; padding: 12px 16px; font-size: 14px; color: #4b5563; }
+  .collapsible-content.show { display: block; }
+
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: 600; }
+  .tag-bull { background: #d1fae5; color: #065f46; }
+  .tag-bear { background: #fee2e2; color: #991b1b; }
+  .tag-neutral { background: #fef3c7; color: #92400e; }
+</style>
+</head>
+<body>
+
+<!-- Report Header -->
+<div class="report-header">
+  <h1>🔬 低价封测板块个股投资分析报告</h1>
+  <div class="meta">
+    <span>华天科技 (SZ002185)</span> · <span>太极实业 (SH600667)</span>
+    <br>
+    <span>分析日期：2026-06-04</span> · <span>数据源：NeoData 金融数据服务</span>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- 华天科技 SECTION -->
+<!-- ============================================ -->
+<div class="stock-section huatian">
+<h2>华天科技 (SZ002185)</h2>
+
+<!-- 1. Decision Card -->
+<div class="decision-card hold">
+  <div class="verdict">🟡 HOLD / 不建仓</div>
+  <div class="sub">Phase 2 裁决 SELL → Phase 3 不持仓即不买 → Phase 4 综合评估：当前非入场时机</div>
+  <div class="badges">
+    <span class="badge">信心水平：中等</span>
+    <span class="badge">风险等级：高</span>
+  </div>
+  <div class="grid">
+    <div class="grid-item"><div class="label">当前价</div><div class="value">19.26</div></div>
+    <div class="grid-item"><div class="label">目标入场价</div><div class="value">13-15</div></div>
+    <div class="grid-item"><div class="label">目标价</div><div class="value">22-25</div></div>
+    <div class="grid-item"><div class="label">止损价</div><div class="value">12.00</div></div>
+  </div>
+</div>
+
+<!-- 2. Radar Chart -->
+<div class="chart-card">
+  <h3>📊 综合评分雷达图</h3>
+  <div style="max-width:450px; margin:0 auto;">
+    <canvas id="radarHuatian"></canvas>
+  </div>
+</div>
+
+<!-- 3. Price Chart -->
+<div class="chart-card">
+  <h3>📈 华天科技 近60日价格走势（模拟收盘价）</h3>
+  <canvas id="priceHuatian" height="260"></canvas>
+</div>
+
+<!-- 4. Bull/Bear Chart -->
+<div class="chart-card">
+  <h3>⚖️ 多空论点对比</h3>
+  <canvas id="bullBearHuatian" height="220"></canvas>
+</div>
+
+<!-- 5. Risk Triangle -->
+<div class="chart-card">
+  <h3>🛡️ 风险评估三方评分</h3>
+  <div style="max-width:450px; margin:0 auto;">
+    <canvas id="riskRadarHuatian"></canvas>
+  </div>
+</div>
+
+<!-- 6. Detail Text -->
+<div class="text-section">
+  <h3>📝 四维分析摘要</h3>
+  
+  <div class="collapsible" onclick="toggleCollapsible(this)">技术面 <span class="tag tag-neutral">7.0/10</span></div>
+  <div class="collapsible-content">
+    <p>当前价19.26元，SAR翻空信号21.78元已触发，短期趋势转弱。MACD绿柱缩短但未金叉，RSI约55中性区域，KDJ-J值偏中性。20日均线走平略下弯，60日均线仍上移但斜率放缓。量能近期萎缩，5日主力净流出-31.51亿元，资金撤离明显。支撑位18.0/16.5，阻力位21.8/23.5。</p>
+  </div>
+  
+  <div class="collapsible" onclick="toggleCollapsible(this)">基本面 <span class="tag tag-bear">5.8/10</span></div>
+  <div class="collapsible-content">
+    <p>PE 90x处于91.48%历史分位，估值明显偏高。Q1扣非净利率从0.06%改善至1.16%，但绝对水平仍低。经营现金流34.72亿较强，但自由现金流-27.24亿（资本开支大）。PB 3.57x，ROE仅3.9%偏低。行业景气回暖中但公司盈利能力恢复缓慢。</p>
+  </div>
+  
+  <div class="collapsible" onclick="toggleCollapsible(this)">新闻面 <span class="tag tag-bull">7.0/10</span></div>
+  <div class="collapsible-content">
+    <p>半导体封测行业整体景气向上，先进封装（Chiplet/2.5D/3D）需求旺盛。公司获得国产替代订单，AI相关封装订单增长。但短期无重大利好催化，市场已充分交易行业复苏预期。</p>
+  </div>
+  
+  <div class="collapsible" onclick="toggleCollapsible(this)">情绪面 <span class="tag tag-bear">3.6/10</span></div>
+  <div class="collapsible-content">
+    <p>5日主力资金净流出-31.51亿元，资金大幅撤离。融资余额上升但融券同步增加，多空分歧加大。机构目标价12.70元，较当前价低34%，卖方不看好。北向资金近期减仓。龙虎榜无亮眼席位。</p>
+  </div>
+</div>
+
+<div class="text-section">
+  <h3>⚔️ 多空辩论结论</h3>
+  <div class="detail-grid">
+    <div class="detail-block">
+      <h4><span class="tag tag-bull">多头</span> 核心论点</h4>
+      <ul>
+        <li>先进封装赛道空间巨大，公司已获订单验证</li>
+        <li>Q1盈利改善趋势确立，扣非净利率从0.06%→1.16%</li>
+        <li>经营现金流34.72亿健康，支撑扩产</li>
+        <li>国产替代加速，市场份额提升</li>
+      </ul>
+    </div>
+    <div class="detail-block">
+      <h4><span class="tag tag-bear">空头</span> 核心论点</h4>
+      <ul>
+        <li>PE 90x严重高估，机构目标价仅12.70元</li>
+        <li>自由现金流-27.24亿，资本开支吞噬利润</li>
+        <li>主力5日净流出-31.51亿，资金用脚投票</li>
+        <li>SAR翻空、技术面破位，短期趋势恶化</li>
+      </ul>
+    </div>
+  </div>
+  <div class="highlight">
+    <strong>研究主管裁决：</strong>SELL。估值泡沫+资金撤离构成双重压制，Q1改善幅度不足以支撑90x PE。若未来回调至13-15元且盈利持续改善，可重新评估。
+  </div>
+</div>
+
+<div class="text-section">
+  <h3>🛡️ 风险评估结论</h3>
+  <table>
+    <tr><th>视角</th><th>评分</th><th>核心观点</th></tr>
+    <tr><td><span class="tag tag-bull">激进</span></td><td>6.5/10</td><td>先进封装赛道空间巨大，Q1改善趋势若延续，当前回撤是上车机会。错失成本高于短期回调风险。</td></tr>
+    <tr><td><span class="tag tag-bear">保守</span></td><td>2.5/10</td><td>PE 90x极端高估，自由现金流为负，主力资金大幅流出。预期下行空间-19.2%。</td></tr>
+    <tr><td><span class="tag tag-neutral">中性</span></td><td>5.5/10</td><td>行业趋势向上但估值透支，建议分批建仓策略：13-15元区间分2-3批入场，首仓不超过20%。</td></tr>
+  </table>
+  <div class="highlight red">
+    <strong>风险主管最终裁决：</strong>HOLD（不建仓）。三方加权风险综合评分4.8/10，当前价格风险收益比不佳。建议等待Q2财报验证+估值回归后再入场。
+  </div>
+</div>
+
+<div class="text-section">
+  <h3>🔑 关键催化剂 & 风险事件</h3>
+  <div class="detail-grid">
+    <div class="detail-block">
+      <h4>🟢 上行催化剂</h4>
+      <ul>
+        <li>Q2扣非净利率≥2%，盈利加速验证</li>
+        <li>先进封装大单落地（Chiplet/2.5D）</li>
+        <li>PE回落至50x以下，估值回归合理</li>
+        <li>国产替代政策加码</li>
+      </ul>
+    </div>
+    <div class="detail-block">
+      <h4>🔴 下行风险</h4>
+      <ul>
+        <li>Q2盈利改善不及预期</li>
+        <li>主力资金持续流出，流动性风险</li>
+        <li>半导体行业景气二次探底</li>
+        <li>资本开支继续侵蚀自由现金流</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+</div><!-- end huatian section -->
+
+<!-- ============================================ -->
+<!-- 太极实业 SECTION -->
+<!-- ============================================ -->
+<div class="stock-section taiji">
+<h2>太极实业 (SH600667)</h2>
+
+<!-- 1. Decision Card -->
+<div class="decision-card sell">
+  <div class="verdict">🔴 SELL / 坚决不买</div>
+  <div class="sub">Phase 2 裁决 SELL → Phase 3 不持仓即不买 → Phase 4 综合评估：极度高估，坚决回避</div>
+  <div class="badges">
+    <span class="badge">信心水平：高</span>
+    <span class="badge">风险等级：极高</span>
+  </div>
+  <div class="grid">
+    <div class="grid-item"><div class="label">当前价</div><div class="value">16.36</div></div>
+    <div class="grid-item"><div class="label">目标入场价</div><div class="value">10-12</div></div>
+    <div class="grid-item"><div class="label">目标价</div><div class="value">18-20</div></div>
+    <div class="grid-item"><div class="label">止损价</div><div class="value">9.50</div></div>
+  </div>
+</div>
+
+<!-- 2. Radar Chart -->
+<div class="chart-card">
+  <h3>📊 综合评分雷达图</h3>
+  <div style="max-width:450px; margin:0 auto;">
+    <canvas id="radarTaiji"></canvas>
+  </div>
+</div>
+
+<!-- 3. Price Chart -->
+<div class="chart-card">
+  <h3>📈 太极实业 近60日价格走势（模拟收盘价）</h3>
+  <canvas id="priceTaiji" height="260"></canvas>
+</div>
+
+<!-- 4. Bull/Bear Chart -->
+<div class="chart-card">
+  <h3>⚖️ 多空论点对比</h3>
+  <canvas id="bullBearTaiji" height="220"></canvas>
+</div>
+
+<!-- 5. Risk Triangle -->
+<div class="chart-card">
+  <h3>🛡️ 风险评估三方评分</h3>
+  <div style="max-width:450px; margin:0 auto;">
+    <canvas id="riskRadarTaiji"></canvas>
+  </div>
+</div>
+
+<!-- 6. Detail Text -->
+<div class="text-section">
+  <h3>📝 四维分析摘要</h3>
+  
+  <div class="collapsible" onclick="toggleCollapsible(this)">技术面 <span class="tag tag-neutral">6.5/10</span></div>
+  <div class="collapsible-content">
+    <p>当前价16.36元，BIAS24高达29%严重超买，RSI6=80.83进入极度超买区，KDJ-J=102严重钝化，CCI=210极端值。技术指标全面发出强烈的短线见顶信号。100%筹码获利盘，抛压随时可能释放。短期均线多头排列但斜率过陡，回踩概率极大。</p>
+  </div>
+  
+  <div class="collapsible" onclick="toggleCollapsible(this)">基本面 <span class="tag tag-bear">3.5/10</span></div>
+  <div class="collapsible-content">
+    <p>PE/PB均处于5年100%ile历史极值，估值泡沫严重。经营现金流从21.75亿崩塌至4.38亿（-80%），现金流急剧恶化。HBM合同6亿美元+150%增长与SK Hynix锁至2030是唯一亮点，但利润转化尚未验证。光伏业务亏损拖累整体。ROE极低，盈利质量堪忧。</p>
+  </div>
+  
+  <div class="collapsible" onclick="toggleCollapsible(this)">新闻面 <span class="tag tag-bull">7.5/10</span></div>
+  <div class="collapsible-content">
+    <p>HBM（高带宽内存）赛道持续火热，与SK Hynix的6亿美元大合同锁至2030年是最强催化剂。AI算力需求推动封测景气。但光伏业务政策不确定性增加，行业产能过剩。利好已在股价中充分反映。</p>
+  </div>
+  
+  <div class="collapsible" onclick="toggleCollapsible(this)">情绪面 <span class="tag tag-neutral">5.2/10</span></div>
+  <div class="collapsible-content">
+    <p>融资盘活跃但融券同步增加。100%获利筹码意味着大量浮盈盘随时可能兑现。游资参与度较高，短线资金属性重。北向资金态度谨慎。HBM概念吸引关注但跟风盘可能迅速退潮。</p>
+  </div>
+</div>
+
+<div class="text-section">
+  <h3>⚔️ 多空辩论结论</h3>
+  <div class="detail-grid">
+    <div class="detail-block">
+      <h4><span class="tag tag-bull">多头</span> 核心论点</h4>
+      <ul>
+        <li>HBM赛道爆发，6亿美元大单锁定至2030年</li>
+        <li>SK Hynix合作深度绑定，护城河显著</li>
+        <li>AI算力需求持续增长，封测景气周期</li>
+        <li>概念热度高，资金关注度强</li>
+      </ul>
+    </div>
+    <div class="detail-block">
+      <h4><span class="tag tag-bear">空头</span> 核心论点</h4>
+      <ul>
+        <li>PE/PB均5年100%ile，估值泡沫极度危险</li>
+        <li>经营现金流-80%崩塌，基本面严重恶化</li>
+        <li>RSI6=80.83/KDJ-J=102/BIAS24=29%，技术面极端超买</li>
+        <li>100%获利筹码，抛压随时可能释放</li>
+        <li>光伏业务亏损拖累，不是纯HBM标的</li>
+      </ul>
+    </div>
+  </div>
+  <div class="highlight red">
+    <strong>研究主管裁决：</strong>强烈SELL。估值泡沫+基本面恶化+技术极端超买三重共振，下行风险远大于上行空间。HBM大单是唯一亮点但已被充分定价。若回调至10-12元且HBM利润验证，方可重新评估。
+  </div>
+</div>
+
+<div class="text-section">
+  <h3>🛡️ 风险评估结论</h3>
+  <table>
+    <tr><th>视角</th><th>评分</th><th>核心观点</th></tr>
+    <tr><td><span class="tag tag-bull">激进</span></td><td>4.0/10</td><td>HBM赛道确定性强，SK Hynix订单锁至2030年提供长期保障。短线超买但中期逻辑未变，回调即是机会。错失HBM行情成本更高。</td></tr>
+    <tr><td><span class="tag tag-bear">保守</span></td><td>1.0/10</td><td>极度危险。PE/PB历史极值+经营现金流崩塌-80%+技术全面超买。预期下行空间-31.6%。回避为上。</td></tr>
+    <tr><td><span class="tag tag-neutral">中性</span></td><td>3.0/10</td><td>看空但不过度悲观。HBM订单是实打实的增量，需等利润验证+估值回归。建议10-12元区间分批入场，首仓不超15%。</td></tr>
+  </table>
+  <div class="highlight red">
+    <strong>风险主管最终裁决：</strong>强烈SELL / 坚决不买。三方加权风险综合评分2.7/10，处于极度危险区间。当前价格入场风险极大，估值、基本面、技术面三重利空共振。唯一的HBM亮点不足以抵消短期巨大下行风险。
+  </div>
+</div>
+
+<div class="text-section">
+  <h3>🔑 关键催化剂 & 风险事件</h3>
+  <div class="detail-grid">
+    <div class="detail-block">
+      <h4>🟢 上行催化剂</h4>
+      <ul>
+        <li>HBM大单利润率验证（Q2/Q3财报）</li>
+        <li>SK Hynix追加订单或扩大合作</li>
+        <li>光伏业务扭亏</li>
+        <li>AI算力政策进一步加码</li>
+      </ul>
+    </div>
+    <div class="detail-block">
+      <h4>🔴 下行风险</h4>
+      <ul>
+        <li>100%获利筹码集中抛售，踩踏风险</li>
+        <li>经营现金流持续恶化</li>
+        <li>HBM概念退潮，估值泡沫破裂</li>
+        <li>光伏业务持续亏损拖累</li>
+        <li>BIAS24=29%均值回归，历史显示-20%以上回撤</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+</div><!-- end taiji section -->
+
+<!-- ============================================ -->
+<!-- COMPARISON TABLE -->
+<!-- ============================================ -->
+<div class="chart-card">
+  <h3>📋 双标的综合对比</h3>
+  <table>
+    <tr><th>维度</th><th>华天科技 (SZ002185)</th><th>太极实业 (SH600667)</th></tr>
+    <tr><td><strong>最终决策</strong></td><td>🟡 HOLD / 不建仓</td><td>🔴 SELL / 坚决不买</td></tr>
+    <tr><td>综合评分</td><td>5.85/10</td><td>5.68/10</td></tr>
+    <tr><td>风险综合评分</td><td>4.8/10</td><td>2.7/10</td></tr>
+    <tr><td>估值水位</td><td>PE 90x (91%ile) — 高估</td><td>PE/PB 100%ile — 极度高估</td></tr>
+    <tr><td>基本面趋势</td><td>↗️ 上行（Q1改善中）</td><td>↘️ 下行（现金流-80%）</td></tr>
+    <tr><td>技术面状态</td><td>SAR翻空，趋势转弱</td><td>全面超买，见顶信号强烈</td></tr>
+    <tr><td>核心亮点</td><td>先进封装订单+Q1改善</td><td>HBM 6亿美元大单锁至2030</td></tr>
+    <tr><td>最大风险</td><td>主力资金大幅流出+估值高</td><td>估值极值+现金流崩塌+抛压</td></tr>
+    <tr><td>若未来买入优先级</td><td><strong>优先</strong>（上行趋势）</td><td>其次（需基本面验证）</td></tr>
+    <tr><td>建议入场区间</td><td>13-15元</td><td>10-12元</td></tr>
+  </table>
+</div>
+
+<!-- Disclaimer -->
+<div class="disclaimer">
+  ⚠️ <strong>免责声明</strong><br>
+  本分析报告由 AI 基于公开信息整理生成，仅供学习与研究参考，<strong>不构成任何投资建议或个股推荐</strong>。<br>
+  投资有风险，决策需谨慎。任何投资决策应基于个人独立判断，并在必要时咨询专业金融顾问。<br>
+  数据来源：NeoData 金融数据服务 | 分析日期：2026-06-04<br>
+  本报告中所涉及的技术指标、财务数据及市场观点均可能随市场变化而发生改变，过往表现不代表未来收益。
+</div>
+
+<script>
+// ===== Utility =====
+function toggleCollapsible(el) {
+  el.classList.toggle("active");
+  var content = el.nextElementSibling;
+  content.classList.toggle("show");
+}
+
+// ===== Colors =====
+const BLUE = "rgba(59,130,246,0.7)";
+const BLUE_BG = "rgba(59,130,246,0.15)";
+const RED = "rgba(239,68,68,0.7)";
+const RED_BG = "rgba(239,68,68,0.15)";
+const GREEN = "rgba(16,185,129,0.7)";
+const GREEN_BG = "rgba(16,185,129,0.15)";
+const AMBER = "rgba(245,158,11,0.7)";
+const AMBER_BG = "rgba(245,158,11,0.15)";
+
+// ===== 1. Radar Charts =====
+const radarLabels = ["技术面", "基本面", "新闻面", "情绪面", "风险面"];
+
+new Chart(document.getElementById("radarHuatian"), {
+  type: "radar",
+  data: {
+    labels: radarLabels,
+    datasets: [{
+      label: "华天科技",
+      data: [7.0, 5.8, 7.0, 3.6, 4.8],
+      borderColor: BLUE,
+      backgroundColor: BLUE_BG,
+      borderWidth: 2,
+      pointBackgroundColor: BLUE
+    }]
+  },
+  options: {
+    scales: { r: { min: 0, max: 10, ticks: { stepSize: 2 } } },
+    plugins: { legend: { display: false } }
+  }
+});
+
+new Chart(document.getElementById("radarTaiji"), {
+  type: "radar",
+  data: {
+    labels: radarLabels,
+    datasets: [{
+      label: "太极实业",
+      data: [6.5, 3.5, 7.5, 5.2, 2.7],
+      borderColor: AMBER,
+      backgroundColor: AMBER_BG,
+      borderWidth: 2,
+      pointBackgroundColor: AMBER
+    }]
+  },
+  options: {
+    scales: { r: { min: 0, max: 10, ticks: { stepSize: 2 } } },
+    plugins: { legend: { display: false } }
+  }
+});
+
+// ===== 2. Price Charts =====
+// Simulated ~60 trading days closing prices (trend reflects actual data patterns)
+const huatianPrices = [
+  14.8, 15.1, 15.3, 15.0, 15.4, 15.7, 15.9, 16.1, 16.4, 16.2,
+  16.5, 16.8, 17.0, 17.3, 17.5, 17.2, 17.6, 17.9, 18.1, 18.4,
+  18.2, 18.6, 18.9, 19.1, 19.4, 19.7, 20.0, 20.3, 20.6, 20.9,
+  21.2, 21.5, 21.8, 21.5, 21.2, 20.8, 20.5, 20.2, 19.8, 19.5,
+  19.2, 19.0, 19.3, 19.5, 19.6, 19.4, 19.2, 19.0, 19.1, 19.3,
+  19.4, 19.2, 19.0, 18.8, 19.1, 19.3, 19.5, 19.4, 19.2, 19.26
+];
+const taijiPrices = [
+  8.5, 8.7, 8.6, 8.9, 9.1, 9.0, 9.3, 9.5, 9.8, 10.1,
+  10.3, 10.6, 10.9, 11.2, 11.5, 11.8, 12.1, 12.4, 12.8, 13.1,
+  13.5, 13.8, 14.2, 14.5, 14.9, 15.2, 15.5, 15.8, 16.0, 16.3,
+  16.1, 16.4, 16.7, 17.0, 16.8, 16.5, 16.3, 16.1, 16.4, 16.6,
+  16.8, 16.5, 16.3, 16.1, 16.4, 16.6, 16.3, 16.1, 16.4, 16.2,
+  16.5, 16.3, 16.1, 16.4, 16.2, 16.5, 16.3, 16.1, 16.4, 16.36
+];
+
+function sma(data, period) {
+  return data.map((_, i) => {
+    if (i < period - 1) return null;
+    const slice = data.slice(i - period + 1, i + 1);
+    return slice.reduce((a, b) => a + b, 0) / period;
+  });
+}
+
+const huatianSMA20 = sma(huatianPrices, 20);
+const huatianSMA60 = sma(huatianPrices, 60);
+const taijiSMA20 = sma(taijiPrices, 20);
+const taijiSMA60 = sma(taijiPrices, 60);
+
+const dayLabels = Array.from({length: 60}, (_, i) => `D${i+1}`);
+
+new Chart(document.getElementById("priceHuatian"), {
+  type: "line",
+  data: {
+    labels: dayLabels,
+    datasets: [
+      { label: "收盘价", data: huatianPrices, borderColor: BLUE, borderWidth: 2, pointRadius: 0, fill: false, tension: 0.1 },
+      { label: "SMA20", data: huatianSMA20, borderColor: AMBER, borderWidth: 1.5, pointRadius: 0, borderDash: [5,3], fill: false },
+      { label: "SMA60", data: huatianSMA60, borderColor: RED, borderWidth: 1.5, pointRadius: 0, borderDash: [8,4], fill: false },
+    ]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { position: "top" },
+      annotation: {}
+    },
+    scales: { y: { beginAtZero: false } }
+  }
+});
+
+new Chart(document.getElementById("priceTaiji"), {
+  type: "line",
+  data: {
+    labels: dayLabels,
+    datasets: [
+      { label: "收盘价", data: taijiPrices, borderColor: AMBER, borderWidth: 2, pointRadius: 0, fill: false, tension: 0.1 },
+      { label: "SMA20", data: taijiSMA20, borderColor: GREEN, borderWidth: 1.5, pointRadius: 0, borderDash: [5,3], fill: false },
+      { label: "SMA60", data: taijiSMA60, borderColor: RED, borderWidth: 1.5, pointRadius: 0, borderDash: [8,4], fill: false },
+    ]
+  },
+  options: {
+    responsive: true,
+    plugins: { legend: { position: "top" } },
+    scales: { y: { beginAtZero: false } }
+  }
+});
+
+// ===== 3. Bull/Bear Charts =====
+const bbLabels = ["估值合理性", "盈利趋势", "现金流质量", "行业景气", "资金态度", "技术信号"];
+
+new Chart(document.getElementById("bullBearHuatian"), {
+  type: "bar",
+  data: {
+    labels: bbLabels,
+    datasets: [
+      { label: "多头权重", data: [3, 8, 7, 8, 3, 5], backgroundColor: GREEN_BG, borderColor: GREEN, borderWidth: 1 },
+      { label: "空头权重", data: [9, 4, 8, 3, 9, 7], backgroundColor: RED_BG, borderColor: RED, borderWidth: 1 }
+    ]
+  },
+  options: {
+    indexAxis: "y",
+    responsive: true,
+    scales: { x: { max: 10 } },
+    plugins: { legend: { position: "top" } }
+  }
+});
+
+new Chart(document.getElementById("bullBearTaiji"), {
+  type: "bar",
+  data: {
+    labels: bbLabels,
+    datasets: [
+      { label: "多头权重", data: [2, 6, 3, 9, 6, 4], backgroundColor: GREEN_BG, borderColor: GREEN, borderWidth: 1 },
+      { label: "空头权重", data: [10, 7, 9, 3, 7, 9], backgroundColor: RED_BG, borderColor: RED, borderWidth: 1 }
+    ]
+  },
+  options: {
+    indexAxis: "y",
+    responsive: true,
+    scales: { x: { max: 10 } },
+    plugins: { legend: { position: "top" } }
+  }
+});
+
+// ===== 4. Risk Radar =====
+const riskLabels = ["估值风险", "基本面风险", "技术面风险", "流动性风险", "情绪面风险"];
+
+new Chart(document.getElementById("riskRadarHuatian"), {
+  type: "radar",
+  data: {
+    labels: riskLabels,
+    datasets: [
+      { label: "激进", data: [4, 3, 5, 4, 5], borderColor: GREEN, backgroundColor: GREEN_BG, borderWidth: 2 },
+      { label: "保守", data: [9, 7, 6, 8, 8], borderColor: RED, backgroundColor: RED_BG, borderWidth: 2 },
+      { label: "中性", data: [7, 5, 5, 6, 5], borderColor: AMBER, backgroundColor: AMBER_BG, borderWidth: 2 }
+    ]
+  },
+  options: {
+    scales: { r: { min: 0, max: 10, ticks: { stepSize: 2 } } },
+    plugins: { legend: { position: "top" } }
+  }
+});
+
+new Chart(document.getElementById("riskRadarTaiji"), {
+  type: "radar",
+  data: {
+    labels: riskLabels,
+    datasets: [
+      { label: "激进", data: [6, 5, 6, 4, 4], borderColor: GREEN, backgroundColor: GREEN_BG, borderWidth: 2 },
+      { label: "保守", data: [10, 9, 9, 8, 9], borderColor: RED, backgroundColor: RED_BG, borderWidth: 2 },
+      { label: "中性", data: [8, 7, 7, 6, 5], borderColor: AMBER, backgroundColor: AMBER_BG, borderWidth: 2 }
+    ]
+  },
+  options: {
+    scales: { r: { min: 0, max: 10, ticks: { stepSize: 2 } } },
+    plugins: { legend: { position: "top" } }
+  }
+});
+</script>
+
+</body>
+</html>

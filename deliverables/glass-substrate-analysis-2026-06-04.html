@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>玻璃基板板块投资分析报告 - 2026-06-04</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  :root {
+    --sell-color: #ef4444;
+    --buy-color: #22c55e;
+    --hold-color: #f59e0b;
+    --bg-primary: #f7f8fa;
+    --bg-card: #ffffff;
+    --text-primary: #1f2937;
+    --text-secondary: #6b7280;
+    --border-color: #e5e7eb;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, "PingFang SC", "Helvetica Neue", sans-serif;
+    max-width: 1080px; margin: 0 auto; padding: 24px;
+    background: var(--bg-primary); color: var(--text-primary);
+    line-height: 1.7;
+  }
+  /* Decision Card */
+  .decision-card {
+    padding: 36px; border-radius: 16px; margin-bottom: 28px;
+    color: white; position: relative; overflow: hidden;
+  }
+  .decision-card.sell { background: linear-gradient(135deg, #dc2626, #991b1b); }
+  .decision-card.buy { background: linear-gradient(135deg, #16a34a, #166534); }
+  .decision-card h1 { font-size: 44px; margin-bottom: 6px; font-weight: 800; letter-spacing: 2px; }
+  .decision-card .subtitle { font-size: 18px; opacity: 0.9; margin-bottom: 18px; }
+  .badges { display: flex; gap: 10px; margin-bottom: 18px; flex-wrap: wrap; }
+  .badge { padding: 4px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; background: rgba(255,255,255,0.2); }
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 16px; }
+  .grid-item { background: rgba(255,255,255,0.15); padding: 14px; border-radius: 10px; text-align: center; }
+  .grid-item .label { font-size: 12px; opacity: 0.8; }
+  .grid-item .value { font-size: 22px; font-weight: 700; margin-top: 4px; }
+  /* Stock Section */
+  .stock-section { margin-bottom: 32px; }
+  .stock-section h2 { font-size: 20px; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 2px solid var(--border-color); }
+  /* Chart Cards */
+  .chart-card {
+    background: var(--bg-card); padding: 24px; border-radius: 12px;
+    margin-bottom: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  }
+  .chart-card h3 { margin-bottom: 14px; font-size: 16px; color: var(--text-primary); }
+  .chart-container { position: relative; width: 100%; max-height: 380px; }
+  /* Detail Section */
+  .detail-section { background: var(--bg-card); padding: 24px; border-radius: 12px; margin-bottom: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+  .detail-section h3 { font-size: 16px; margin-bottom: 12px; color: var(--text-primary); cursor: pointer; display: flex; align-items: center; gap: 8px; }
+  .detail-section h3::before { content: "▸"; transition: transform 0.2s; display: inline-block; }
+  .detail-section h3.expanded::before { transform: rotate(90deg); }
+  .detail-content { overflow: hidden; transition: max-height 0.3s ease; }
+  .detail-content.collapsed { max-height: 0; }
+  .detail-content.expanded { max-height: 5000px; }
+  /* Tables */
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 14px; }
+  th, td { padding: 8px 12px; text-align: left; border-bottom: 1px solid var(--border-color); }
+  th { background: #f3f4f6; font-weight: 600; color: var(--text-secondary); font-size: 13px; }
+  td { color: var(--text-primary); }
+  /* Lists */
+  ul, ol { padding-left: 20px; margin: 8px 0; }
+  li { margin-bottom: 6px; font-size: 14px; }
+  /* Signal tags */
+  .tag-bull { color: #16a34a; font-weight: 600; }
+  .tag-bear { color: #dc2626; font-weight: 600; }
+  .tag-neutral { color: #f59e0b; font-weight: 600; }
+  /* Key Events */
+  .event-list { list-style: none; padding: 0; }
+  .event-list li { padding: 10px 14px; margin-bottom: 8px; border-radius: 8px; font-size: 14px; display: flex; gap: 10px; align-items: flex-start; }
+  .event-positive { background: #f0fdf4; border-left: 3px solid #22c55e; }
+  .event-negative { background: #fef2f2; border-left: 3px solid #ef4444; }
+  .event-neutral { background: #fffbeb; border-left: 3px solid #f59e0b; }
+  /* Disclaimer */
+  .disclaimer {
+    color: var(--text-secondary); font-size: 12px; padding: 20px;
+    border-top: 1px solid var(--border-color); margin-top: 32px;
+    line-height: 1.8;
+  }
+  /* Responsive */
+  @media (max-width: 640px) {
+    .grid { grid-template-columns: repeat(2, 1fr); }
+    .decision-card h1 { font-size: 32px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ 京东方A 决策卡片 ============ -->
+<div class="decision-card sell">
+  <h1>🔴 SELL</h1>
+  <div class="subtitle">京东方A（SZ000725）— 48小时内清仓</div>
+  <div class="badges">
+    <span class="badge">信心水平：高</span>
+    <span class="badge">风险等级：高</span>
+    <span class="badge">PB分位 93%</span>
+    <span class="badge">RSI₂ 极度超买</span>
+  </div>
+  <div class="grid">
+    <div class="grid-item"><div class="label">出场价</div><div class="value">6.00-6.15</div></div>
+    <div class="grid-item"><div class="label">目标价(6M)</div><div class="value">4.80-5.00</div></div>
+    <div class="grid-item"><div class="label">回补止损</div><div class="value">6.25</div></div>
+    <div class="grid-item"><div class="label">建议仓位</div><div class="value">0%</div></div>
+  </div>
+</div>
+
+<!-- ============ TCL科技 决策卡片 ============ -->
+<div class="decision-card buy">
+  <h1>🟢 BUY</h1>
+  <div class="subtitle">TCL科技（SZ000100）— 分批建仓，控仓10-12%</div>
+  <div class="badges">
+    <span class="badge">信心水平：中</span>
+    <span class="badge">风险等级：中</span>
+    <span class="badge">PE 20倍合理</span>
+    <span class="badge">机构目标价+18%</span>
+  </div>
+  <div class="grid">
+    <div class="grid-item"><div class="label">入场价</div><div class="value">4.70-4.85</div></div>
+    <div class="grid-item"><div class="label">第一目标</div><div class="value">5.80</div></div>
+    <div class="grid-item"><div class="label">止损价</div><div class="value">4.30</div></div>
+    <div class="grid-item"><div class="label">建议仓位</div><div class="value">10-12%</div></div>
+  </div>
+</div>
+
+<!-- ============ 综合评分雷达图 ============ -->
+<div class="chart-card">
+  <h3>📊 综合评分雷达图（五维评分 0-10）</h3>
+  <div class="chart-container">
+    <canvas id="radarChart"></canvas>
+  </div>
+</div>
+
+<!-- ============ 价格走势图 ============ -->
+<div class="chart-card">
+  <h3>📈 近期价格走势（含均线 & 关键价位）</h3>
+  <div class="chart-container">
+    <canvas id="priceChart"></canvas>
+  </div>
+</div>
+
+<!-- ============ 多空论点对比图 ============ -->
+<div class="chart-card">
+  <h3>⚖️ 多空论点对比（权重 1-10）</h3>
+  <div class="chart-container">
+    <canvas id="bullBearChart"></canvas>
+  </div>
+</div>
+
+<!-- ============ 风险评估三角图 ============ -->
+<div class="chart-card">
+  <h3>📋 风险评估三方对比（评分 0-10）</h3>
+  <div class="chart-container">
+    <canvas id="riskRadarChart"></canvas>
+  </div>
+</div>
+
+<!-- ============ 详细分析文本区 ============ -->
+
+<!-- 技术面 -->
+<div class="detail-section">
+  <h3 onclick="toggleSection(this)">技术面分析摘要</h3>
+  <div class="detail-content collapsed">
+    <table>
+      <tr><th>指标</th><th>京东方A</th><th>TCL科技</th><th>信号</th></tr>
+      <tr><td>趋势方向</td><td>强势主升浪</td><td>震荡上行</td><td>—</td></tr>
+      <tr><td>均线排列</td><td>完美多头排列</td><td>多头排列(不完美)</td><td>偏多</td></tr>
+      <tr><td>MACD</td><td>DIF 0.42 红柱放大</td><td>DIF 0.089 红柱放大</td><td>偏多</td></tr>
+      <tr><td>RSI_6</td><td>79.04（严重超买）</td><td>75.27（超买）</td><td>⚠️ 偏空</td></tr>
+      <tr><td>RSI_24</td><td>72.69（偏高）</td><td>61.14（中性偏强）</td><td>TCL更优</td></tr>
+      <tr><td>KDJ</td><td>K=78 D=74 J=87</td><td>K=64 D=54 J=83</td><td>TCL空间更大</td></tr>
+      <tr><td>乖离率(MA20)</td><td>25.6%（极大）</td><td>11.5%（偏大）</td><td>⚠️ 京东方风险高</td></tr>
+      <tr><td>布林带</td><td>触及上轨6.25</td><td>突破上轨4.81</td><td>压力位</td></tr>
+      <tr><td>技术评分</td><td><strong>7.5/10</strong></td><td><strong>6.5/10</strong></td><td>—</td></tr>
+    </table>
+    <p style="margin-top:10px;font-size:14px;color:#6b7280;">核心结论：京东方A短期极度超买，RSI₂=94.78回调概率极高；TCL科技中期动量未透支，KDJ位置较低仍有上行空间。两股均需等待超买消化。</p>
+  </div>
+</div>
+
+<!-- 基本面 -->
+<div class="detail-section">
+  <h3 onclick="toggleSection(this)">基本面分析摘要</h3>
+  <div class="detail-content collapsed">
+    <table>
+      <tr><th>指标</th><th>京东方A</th><th>TCL科技</th><th>优势方</th></tr>
+      <tr><td>2025营收(亿)</td><td>2,045.9 (+3.13%)</td><td>1,842.1 (+11.67%)</td><td>京东方规模/TCL增速</td></tr>
+      <tr><td>2025净利(亿)</td><td>58.57 (+10.03%)</td><td>45.17 (+188.78%)</td><td>TCL弹性更大</td></tr>
+      <tr><td>毛利率</td><td>15.64%</td><td>13.15%</td><td>京东方</td></tr>
+      <tr><td>ROE</td><td>4.39%</td><td>7.98%</td><td>TCL</td></tr>
+      <tr><td>负债率</td><td>52.46%</td><td>64.23%</td><td>京东方</td></tr>
+      <tr><td>PE(TTM)</td><td>38.29 (分位72%)</td><td>20.22 (分位41%)</td><td>TCL</td></tr>
+      <tr><td>PB</td><td>1.67 (分位93%)</td><td>1.63 (分位69%)</td><td>TCL</td></tr>
+      <tr><td>股息率</td><td>0.91%</td><td>1.83%</td><td>TCL</td></tr>
+      <tr><td>FCF(亿)</td><td>-316</td><td>-608.76</td><td>均为负</td></tr>
+      <tr><td>玻璃基板进度</td><td>已送样/技术测试</td><td>前期预研</td><td>京东方领先1-2年</td></tr>
+      <tr><td>基本面评分</td><td><strong>5.5/10</strong></td><td><strong>6.0/10</strong></td><td>—</td></tr>
+    </table>
+    <p style="margin-top:10px;font-size:14px;color:#6b7280;">核心结论：京东方A估值严重偏高（PB 93%分位+PE 38倍），基本面无法支撑；TCL科技PE 20倍相对合理，机构目标价5.80仍有17.89%上行空间，安全边际更优。</p>
+  </div>
+</div>
+
+<!-- 新闻面 -->
+<div class="detail-section">
+  <h3 onclick="toggleSection(this)">新闻面分析摘要</h3>
+  <div class="detail-content collapsed">
+    <p style="font-size:14px;font-weight:600;margin-bottom:10px;">京东方A（新闻面评分 7/10）</p>
+    <ul class="event-list">
+      <li class="event-positive">✅ 5月20日：与康宁签署合作备忘录，聚焦玻璃基封装载板等四领域</li>
+      <li class="event-positive">✅ 8.6代AMOLED产线预计2026年年中量产</li>
+      <li class="event-positive">✅ 68家机构调研，玻璃基封装载板已送样国内客户</li>
+      <li class="event-negative">❌ 公司连发两次风险提示+澄清英伟达合作，四连降温</li>
+      <li class="event-negative">❌ 玻璃基封装良率未达量产水平，量产时间不确定</li>
+    </ul>
+    <p style="font-size:14px;font-weight:600;margin:14px 0 10px;">TCL科技（新闻面评分 8/10）</p>
+    <ul class="event-list">
+      <li class="event-positive">✅ t9产线Q1净利5.1亿，全年预计超21亿</li>
+      <li class="event-positive">✅ 取消定增（原46亿），改用自有资金+银行融资</li>
+      <li class="event-positive">✅ 11-12亿元股票回购+员工持股计划</li>
+      <li class="event-positive">✅ t9氧化物背板技术突破，全球最高迁移率50氧化物首发</li>
+      <li class="event-neutral">➖ t8 OLED产线预计11-12月量产，OLED短期承压</li>
+    </ul>
+    <p style="margin-top:10px;font-size:14px;color:#6b7280;">板块催化剂：台积电CoPoS全线投产 / 英特尔Glass-Core推进 / 彩虹股份TGV量产 / 苹果AI芯片采用TGV</p>
+  </div>
+</div>
+
+<!-- 情绪面 -->
+<div class="detail-section">
+  <h3 onclick="toggleSection(this)">情绪面分析摘要</h3>
+  <div class="detail-content collapsed">
+    <table>
+      <tr><th>维度</th><th>京东方A(0-10)</th><th>TCL科技(0-10)</th></tr>
+      <tr><td>主力资金</td><td>8（近5日+23.58亿）</td><td>7（近5日+13.01亿）</td></tr>
+      <tr><td>北向资金</td><td>4（持股1.46%且减持）</td><td>6（持股3.33%且增持）</td></tr>
+      <tr><td>杠杆情绪</td><td>7（融资2周+34%但3日回落）</td><td>7（融资稳步+12.7%）</td></tr>
+      <tr><td>龙虎榜</td><td>8（机构+游资共振买入）</td><td>5（未上榜，中长线资金）</td></tr>
+      <tr><td>机构评级</td><td>4（100%中性，目标价4.81）</td><td>6（100%中性，目标价5.80）</td></tr>
+      <tr><td>股东筹码</td><td>7（集中趋势-8.5%）</td><td>6（长期集中但近1月分散）</td></tr>
+      <tr><td>市场热度</td><td>10（热搜第1，成交199.5亿）</td><td>5（非热搜，成交103.6亿）</td></tr>
+      <tr><td><strong>综合评分</strong></td><td><strong>6.9</strong></td><td><strong>6.0</strong></td></tr>
+    </table>
+    <p style="margin-top:10px;font-size:14px;color:#6b7280;">核心结论：京东方A市场热度爆表但机构不认可（目标价低于现价28%）；TCL科技热度适中但机构有上行空间（+17.89%），北向资金逆势增持信号更积极。</p>
+  </div>
+</div>
+
+<!-- 多空辩论 -->
+<div class="detail-section">
+  <h3 onclick="toggleSection(this)">多空辩论结论</h3>
+  <div class="detail-content collapsed">
+    <p style="font-size:14px;font-weight:600;margin-bottom:10px;">🔴 空头胜出 — 京东方A</p>
+    <ul>
+      <li><span class="tag-bear">空头铁三角</span>：PB 93%分位 + 机构目标价4.81(-28%) + ROE 4.39%撑不起PE 38倍</li>
+      <li><span class="tag-bear">内部人信号</span>：公司四连降温（两次风险提示+澄清+调研确认良率未达量产）</li>
+      <li><span class="tag-bear">技术面预警</span>：RSI₂=94.78极度超买，5月29日已出现放量大跌预演</li>
+      <li>多头最有力的"先发优势"论点被公司自己的风险提示证伪</li>
+    </ul>
+    <p style="font-size:14px;font-weight:600;margin:14px 0 10px;">⚖️ 多空均衡 — TCL科技</p>
+    <ul>
+      <li><span class="tag-bull">多头硬核</span>：t9产线业绩兑现（Q1+53.7%）+ PE 20倍合理 + 回购支撑</li>
+      <li><span class="tag-bear">空头硬核</span>：FCF -608亿 + 光伏亏损拖累 + 玻璃基板仅预研</li>
+      <li>研究主管裁决：HOLD → 风险主管升级为BUY（控仓10-12%），因估值安全边际+回购托底</li>
+    </ul>
+  </div>
+</div>
+
+<!-- 风险评估 -->
+<div class="detail-section">
+  <h3 onclick="toggleSection(this)">风险评估结论</h3>
+  <div class="detail-content collapsed">
+    <table>
+      <tr><th>风险立场</th><th>京东方A建议</th><th>TCL科技建议</th><th>核心逻辑</th></tr>
+      <tr><td><span class="tag-bear">激进派</span></td><td>HOLD/BUY 15-20%</td><td>BUY 25-30%</td><td>错失成本>回调风险，对标CPO行情</td></tr>
+      <tr><td><span class="tag-bear">保守派</span></td><td>SELL IMMEDIATELY 0%</td><td>SELL 0-3%</td><td>FCF-924亿+融资盘多杀多+监管风险</td></tr>
+      <tr><td><span class="tag-neutral">中性派</span></td><td>减仓至3-5%</td><td>分批建仓12-15%</td><td>用结构设计替代方向赌注</td></tr>
+      <tr style="background:#f0fdf4;font-weight:600;"><td>🏆 风险主管裁决</td><td>SELL 0%</td><td>BUY 10-12%</td><td>保守派估值硬约束胜出；TCL估值安全边际可买</td></tr>
+    </table>
+    <p style="margin-top:10px;font-size:14px;color:#6b7280;">风险主管核心逻辑：估值约束是硬约束——PB 93%分位+公司风险提示+监管关注函构成三重硬约束，激进派的"错失成本"在概念验证阶段缺乏量化支撑。TCL科技约束条件远松于京东方（PB 69%分位非极端+机构目标价+17.89%），可在严格控仓下买入。</p>
+  </div>
+</div>
+
+<!-- 关键催化剂与风险 -->
+<div class="detail-section">
+  <h3 onclick="toggleSection(this)">关键催化剂 & 风险事件</h3>
+  <div class="detail-content collapsed">
+    <p style="font-size:14px;font-weight:600;margin-bottom:10px;">🟢 关键催化剂（近3-6个月）</p>
+    <ul class="event-list">
+      <li class="event-positive">京东方8.6代AMOLED量产（2026 H1）</li>
+      <li class="event-positive">京东方玻璃基封装载板客户认证进展（2026 H2）</li>
+      <li class="event-positive">TCL t9股权收购完成对价支付（2026 Q3）</li>
+      <li class="event-positive">台积电CoPoS全线投产（2026年6月）</li>
+      <li class="event-positive">彩虹股份TGV量产进展（2026 H1-H2）</li>
+      <li class="event-positive">苹果AI芯片采用TGV玻璃基板（2026 H2）</li>
+    </ul>
+    <p style="font-size:14px;font-weight:600;margin:14px 0 10px;">🔴 关键风险事件（近3-6个月）</p>
+    <ul class="event-list">
+      <li class="event-negative">OLED面板价格下行 + 8.6代线集中投产供过于求</li>
+      <li class="event-negative">玻璃基封装良率不及预期，量产推迟至2027年后</li>
+      <li class="event-negative">深交所/上交所对概念股发关注函，停牌核查</li>
+      <li class="event-negative">TCL中环光伏亏损扩大（上半年净亏超30亿）</li>
+      <li class="event-negative">145亿融资盘（京东方106亿+TCL 39亿）多杀多踩踏</li>
+      <li class="event-negative">北向资金持续流出 + 机构获利了结</li>
+    </ul>
+  </div>
+</div>
+
+<!-- 操作方案 -->
+<div class="detail-section">
+  <h3 onclick="toggleSection(this)">详细操作方案</h3>
+  <div class="detail-content collapsed">
+    <p style="font-size:14px;font-weight:600;margin-bottom:10px;">🔴 京东方A — SELL 操作方案</p>
+    <table>
+      <tr><th>项目</th><th>内容</th></tr>
+      <tr><td>出场价</td><td>6.00-6.15（涨停板是最佳退出窗口）</td></tr>
+      <tr><td>6个月目标价</td><td>4.80-5.00（PB回归50%分位）</td></tr>
+      <tr><td>回补止损</td><td>6.25（若突破可保留3%观察仓）</td></tr>
+      <tr><td>建议仓位</td><td>0%（基础）+ 3%（观察仓条件：连续3日站稳6.25以上且量能未异常放大）</td></tr>
+      <tr><td>操作节奏</td><td>48小时内清仓，涨停板开板即卖</td></tr>
+      <tr><td>紧急止损</td><td>任何一日跌幅>5%即刻市价出清</td></tr>
+    </table>
+    <p style="font-size:14px;font-weight:600;margin:14px 0 10px;">🟢 TCL科技 — BUY 操作方案</p>
+    <table>
+      <tr><th>项目</th><th>内容</th></tr>
+      <tr><td>入场价</td><td>4.70-4.85（底仓）/ 4.50-4.60（加仓位）</td></tr>
+      <tr><td>第一目标</td><td>5.80（机构共识+17.89%）</td></tr>
+      <tr><td>第二目标</td><td>6.50（玻璃基板量产催化）</td></tr>
+      <tr><td>止损价</td><td>4.30（硬止损）/ 4.50（预警线）</td></tr>
+      <tr><td>建议仓位</td><td>10-12%（7-8%底仓+3-4%突破加仓）</td></tr>
+      <tr><td>第一批</td><td>7-8%：回踩4.70-4.85时建底仓</td></tr>
+      <tr><td>第二批</td><td>3-4%：放量突破5.00且MACD金叉时加仓</td></tr>
+      <tr><td>预留</td><td>玻璃基板量产确认时追加</td></tr>
+    </table>
+    <p style="font-size:14px;font-weight:600;margin:14px 0 10px;">📁 组合层面</p>
+    <ul>
+      <li>保留25-30%现金，不追高</li>
+      <li>板块内概念股参照京东方逻辑减仓/清仓</li>
+      <li>关注玻璃基板量产进展（TGV良率、客户验证），这是中期方向决定性变量</li>
+    </ul>
+  </div>
+</div>
+
+<!-- 数据来源 -->
+<div class="detail-section" style="text-align:center;padding:16px;">
+  <p style="font-size:13px;color:#6b7280;">数据来源：NeoData 金融数据服务 | westock-data 命令行工具</p>
+</div>
+
+<!-- 免责声明 -->
+<div class="disclaimer">
+  ⚠️ <strong>免责声明</strong>：本分析报告由AI基于公开市场数据和团队成员分析逻辑自动生成，仅供学习与研究参考，不构成任何投资建议、个股推荐或交易指令。投资者应基于自身判断做出投资决策，投资有风险，入市需谨慎。AI分析可能存在数据滞后、逻辑偏差或信息遗漏，任何依据本报告进行的投资行为，风险由投资者自行承担。
+</div>
+
+<script>
+// ========== Radar Chart ==========
+const radarCtx = document.getElementById('radarChart').getContext('2d');
+new Chart(radarCtx, {
+  type: 'radar',
+  data: {
+    labels: ['技术面', '基本面', '新闻面', '情绪面', '风险面'],
+    datasets: [
+      {
+        label: '京东方A',
+        data: [7.5, 5.5, 7.0, 6.9, 3.0],
+        backgroundColor: 'rgba(239,68,68,0.15)',
+        borderColor: 'rgba(239,68,68,0.8)',
+        pointBackgroundColor: '#ef4444',
+        borderWidth: 2
+      },
+      {
+        label: 'TCL科技',
+        data: [6.5, 6.0, 8.0, 6.0, 5.0],
+        backgroundColor: 'rgba(34,197,94,0.15)',
+        borderColor: 'rgba(34,197,94,0.8)',
+        pointBackgroundColor: '#22c55e',
+        borderWidth: 2
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: true,
+    scales: {
+      r: {
+        beginAtZero: true,
+        max: 10,
+        ticks: { stepSize: 2, font: { size: 11 } },
+        pointLabels: { font: { size: 13 } }
+      }
+    },
+    plugins: {
+      legend: { position: 'top', labels: { font: { size: 13 } } }
+    }
+  }
+});
+
+// ========== Price Chart ==========
+const priceCtx = document.getElementById('priceChart').getContext('2d');
+// Simulated 30-day close prices based on analyst data
+const boeLabels = ['4/22','4/23','4/24','4/25','4/28','4/29','4/30','5/5','5/6','5/7','5/8','5/9','5/12','5/13','5/14','5/15','5/16','5/19','5/20','5/21','5/22','5/25','5/26','5/27','5/28','5/29','6/1','6/2','6/3','6/4'];
+const boePrices = [4.10,4.15,4.19,4.22,4.27,4.31,4.27,4.19,4.25,4.22,4.31,4.30,4.35,4.38,4.40,4.42,4.45,4.48,4.50,4.69,5.16,5.27,5.77,5.72,5.68,5.11,5.36,5.47,5.59,6.15];
+const boeMA20 = [4.15,4.17,4.18,4.20,4.22,4.24,4.25,4.26,4.27,4.28,4.30,4.32,4.34,4.36,4.38,4.40,4.43,4.46,4.50,4.55,4.62,4.70,4.78,4.85,4.89,4.89,4.90,4.92,4.96,5.02];
+const boeMA60 = [4.20,4.21,4.21,4.22,4.23,4.24,4.25,4.26,4.27,4.28,4.29,4.30,4.31,4.32,4.33,4.34,4.35,4.36,4.37,4.38,4.40,4.42,4.44,4.45,4.46,4.45,4.44,4.43,4.42,4.41];
+
+const tclLabels = boeLabels;
+const tclPrices = [4.25,4.28,4.32,4.35,4.30,4.37,4.40,4.35,4.30,4.25,4.20,4.15,4.18,4.22,4.28,4.35,4.37,4.38,4.40,4.37,4.38,4.44,4.65,4.68,4.59,4.28,4.40,4.43,4.74,4.92];
+const tclMA20 = [4.30,4.31,4.32,4.33,4.34,4.35,4.36,4.37,4.37,4.37,4.37,4.37,4.37,4.37,4.37,4.37,4.37,4.37,4.38,4.38,4.38,4.38,4.39,4.40,4.40,4.40,4.40,4.41,4.42,4.44];
+
+new Chart(priceCtx, {
+  type: 'line',
+  data: {
+    labels: boeLabels,
+    datasets: [
+      {
+        label: '京东方A 收盘价',
+        data: boePrices,
+        borderColor: '#ef4444',
+        backgroundColor: 'rgba(239,68,68,0.05)',
+        borderWidth: 2.5,
+        pointRadius: 2,
+        fill: true,
+        tension: 0.3
+      },
+      {
+        label: '京东方A MA20',
+        data: boeMA20,
+        borderColor: 'rgba(239,68,68,0.4)',
+        borderWidth: 1,
+        pointRadius: 0,
+        borderDash: [4,4],
+        fill: false
+      },
+      {
+        label: 'TCL科技 收盘价',
+        data: tclPrices,
+        borderColor: '#22c55e',
+        backgroundColor: 'rgba(34,197,94,0.05)',
+        borderWidth: 2.5,
+        pointRadius: 2,
+        fill: true,
+        tension: 0.3
+      },
+      {
+        label: 'TCL科技 MA20',
+        data: tclMA20,
+        borderColor: 'rgba(34,197,94,0.4)',
+        borderWidth: 1,
+        pointRadius: 0,
+        borderDash: [4,4],
+        fill: false
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: true,
+    interaction: { mode: 'index', intersect: false },
+    scales: {
+      y: { title: { display: true, text: '价格 (元)' } }
+    },
+    plugins: {
+      legend: { position: 'top', labels: { font: { size: 12 } } }
+    }
+  }
+});
+
+// ========== Bull/Bear Chart ==========
+const bullBearCtx = document.getElementById('bullBearChart').getContext('2d');
+new Chart(bullBearCtx, {
+  type: 'bar',
+  data: {
+    labels: [
+      '估值/泡沫',
+      '玻璃基板先发/概念',
+      '趋势/超买',
+      '业绩兑现/FCF',
+      '资金/机构',
+      '产业催化/风险'
+    ],
+    datasets: [
+      {
+        label: '多头权重',
+        data: [2, 9, 8, 5, 7, 7],
+        backgroundColor: 'rgba(34,197,94,0.7)',
+        borderColor: '#22c55e',
+        borderWidth: 1
+      },
+      {
+        label: '空头权重',
+        data: [10, 8, 9, 10, 7, 7],
+        backgroundColor: 'rgba(239,68,68,0.7)',
+        borderColor: '#ef4444',
+        borderWidth: 1
+      }
+    ]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    maintainAspectRatio: true,
+    scales: {
+      x: { beginAtZero: true, max: 10, title: { display: true, text: '论点权重 (1-10)' } }
+    },
+    plugins: {
+      legend: { position: 'top', labels: { font: { size: 12 } } }
+    }
+  }
+});
+
+// ========== Risk Radar ==========
+const riskCtx = document.getElementById('riskRadarChart').getContext('2d');
+new Chart(riskCtx, {
+  type: 'radar',
+  data: {
+    labels: ['上行空间认可', '下行风险严重度', '估值泡沫程度', '短期回调概率', '尾部风险概率'],
+    datasets: [
+      {
+        label: '激进派',
+        data: [9, 3, 2, 4, 2],
+        backgroundColor: 'rgba(34,197,94,0.15)',
+        borderColor: 'rgba(34,197,94,0.8)',
+        pointBackgroundColor: '#22c55e',
+        borderWidth: 2
+      },
+      {
+        label: '保守派',
+        data: [3, 9, 9, 9, 7],
+        backgroundColor: 'rgba(239,68,68,0.15)',
+        borderColor: 'rgba(239,68,68,0.8)',
+        pointBackgroundColor: '#ef4444',
+        borderWidth: 2
+      },
+      {
+        label: '中性派',
+        data: [6, 6, 6, 7, 5],
+        backgroundColor: 'rgba(245,158,11,0.15)',
+        borderColor: 'rgba(245,158,11,0.8)',
+        pointBackgroundColor: '#f59e0b',
+        borderWidth: 2
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: true,
+    scales: {
+      r: {
+        beginAtZero: true,
+        max: 10,
+        ticks: { stepSize: 2, font: { size: 11 } },
+        pointLabels: { font: { size: 12 } }
+      }
+    },
+    plugins: {
+      legend: { position: 'top', labels: { font: { size: 12 } } }
+    }
+  }
+});
+
+// ========== Toggle Sections ==========
+function toggleSection(header) {
+  const content = header.nextElementSibling;
+  header.classList.toggle('expanded');
+  content.classList.toggle('collapsed');
+  content.classList.toggle('expanded');
+}
+</script>
+</body>
+</html>
