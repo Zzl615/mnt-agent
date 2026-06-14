@@ -47,8 +47,15 @@ def split_long_image(input_path, segment_height=2500, quality=95):
     print(f"\n✨ 处理完成！切片保存在目录: {output_dir}")
 
 if __name__ == "__main__":
-    # 指定你的图片路径
-    target_image = "/Users/noaghzil/Desktop/Phone-视频制作/Screenshot_2026-06-07-18-50-04-24.jpg"
+    import sys
+    
+    if len(sys.argv) > 1:
+        target_image = sys.argv[1]
+    else:
+        # 指定你的图片路径
+        target_image = "/Users/noaghzil/Desktop/Phone-视频制作/Screenshot_2026-06-07-18-50-04-24.jpg"
+        
+    target_image = os.path.abspath(os.path.expanduser(target_image))
     
     # 执行切分 (建议每段高度设为 2500 左右，适合手机阅读且方便管理)
     split_long_image(target_image, segment_height=2500)
