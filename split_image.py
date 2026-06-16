@@ -1,12 +1,14 @@
 import os
 from PIL import Image
 
-def split_long_image(input_path, segment_height=2500, quality=95):
+def split_long_image(input_path, segment_height=2500, quality=95, output_dir=None, output_name=None):
     """
     将长截图切分为多段
     :param input_path: 输入图片路径
     :param segment_height: 每段的目标高度（像素）
     :param quality: 输出图片质量 (1-100)
+    :param output_dir: 自定义输出目录
+    :param output_name: 自定义输出文件名（前缀）
     """
     if not os.path.exists(input_path):
         print(f"❌ 找不到文件: {input_path}")
@@ -19,8 +21,10 @@ def split_long_image(input_path, segment_height=2500, quality=95):
 
     # 创建输出目录
     dir_name = os.path.dirname(input_path)
-    base_name = os.path.splitext(os.path.basename(input_path))[0]
-    output_dir = os.path.join(dir_name, f"{base_name}_segments")
+    if not output_name:
+        output_name = os.path.splitext(os.path.basename(input_path))[0]
+    if not output_dir:
+        output_dir = os.path.join(dir_name, f"{output_name}_segments")
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
 
@@ -36,7 +40,7 @@ def split_long_image(input_path, segment_height=2500, quality=95):
         segment = img.crop((0, top, width, bottom))
         
         # 构建输出文件名
-        output_filename = f"{base_name}_{i+1:02d}.jpg"
+        output_filename = f"{output_name}_{i+1:02d}.jpg"
         output_path = os.path.join(output_dir, output_filename)
         
         # 高清保存设置：
